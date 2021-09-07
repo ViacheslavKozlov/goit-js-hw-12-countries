@@ -1,3 +1,4 @@
+import styles from './css/style.css'
 import singleCountryMarkup from './templates/country.hbs'
 import countryListMarkup from './templates/country-list.hbs'
 import fetchCountries from './js/fetchCountries.js'
@@ -26,18 +27,17 @@ function onInput(evt) {
     }
 }
 
-function renderMarkup(numberOfCountries) {
-    
-    if (numberOfCountries.length > 10) {
-        error({
+function renderMarkup(countries) {
+    if (countries.length === 1) {
+        return refs.countryList.insertAdjacentHTML('beforeend', singleCountryMarkup(countries));
+    }
+    else if (countries.length >= 2 && countries.length <= 10) {
+        return countries.forEach(() => (
+            refs.countryList.innerHTML = countryListMarkup(countries)));
+    }
+    else 
+        {error({
             text: 'Too many matches has been found. Please specify your query!',
             delay: 2500,
-        });
-    }
-    if (numberOfCountries.length >= 2 && numberOfCountries.length <= 10) {
-        return numberOfCountries.forEach(() => (refs.countryList.innerHTML = countryListMarkup(numberOfCountries)));
-    }
-    if (numberOfCountries.length === 1) {
-        return refs.countryList.insertAdjacentHTML('afterbegin', singleCountryMarkup(numberOfCountries));
-    }
+        });}
 }
